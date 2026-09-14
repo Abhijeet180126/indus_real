@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New inquiry from {{ contact.name }}</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f5f7; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f5f7; padding:24px 0;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:8px; overflow:hidden;">
+                    <tr>
+                        <td style="background-color:#212529; padding:20px 32px;">
+                            <span style="color:#ffffff; font-size:20px; font-weight:bold;">{{ COMPANY_NAME }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:32px;">
+                            <h1 style="margin:0 0 8px; font-size:20px; color:#212529;">New website inquiry</h1>
+                            <p style="margin:0 0 24px; color:#6c757d; font-size:14px;">
+                                Received {{ contact.created_at }}
+                            </p>
+
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                                <tr>
+                                    <td style="padding:6px 0; color:#6c757d; font-size:14px; width:110px;">Name</td>
+                                    <td style="padding:6px 0; color:#212529; font-size:14px;">{{ contact.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0; color:#6c757d; font-size:14px;">Phone</td>
+                                    <td style="padding:6px 0; color:#212529; font-size:14px;">{{ contact.phone }}</td>
+                                </tr>
+                                {% if contact.email %}
+                                <tr>
+                                    <td style="padding:6px 0; color:#6c757d; font-size:14px;">Email</td>
+                                    <td style="padding:6px 0; font-size:14px;"><a href="mailto:{{ contact.email }}" style="color:#0d6efd; text-decoration:none;">{{ contact.email }}</a></td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <td style="padding:6px 0; color:#6c757d; font-size:14px; vertical-align:top;">Property</td>
+                                    <td style="padding:6px 0; color:#212529; font-size:14px;">
+                                        {% if contact.property %}
+                                            {{ contact.property.title }} &mdash; {{ CURRENCY_SYMBOL }}{{ contact.property.price }}
+                                            {% if property_url %}<br><a href="{{ property_url }}" style="color:#0d6efd; text-decoration:none;">View listing &rarr;</a>{% endif %}
+                                        {% else %}
+                                            General inquiry
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="background-color:#f8f9fa; border-radius:6px; padding:16px 20px; color:#212529; font-size:14px; line-height:1.5; white-space:pre-wrap;">{{ contact.message }}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:16px 32px; background-color:#f8f9fa; color:#adb5bd; font-size:12px;">
+                            Sent automatically from the {{ COMPANY_NAME }} contact form.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

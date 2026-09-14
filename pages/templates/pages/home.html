@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static humanize %}
+
+{% block title %}{{ COMPANY_NAME }} &mdash; Find Your Next Home{% endblock %}
+{% block meta_description %}Browse verified property listings for sale and rent with {{ COMPANY_NAME }}. {{ COMPANY_TAGLINE }}.{% endblock %}
+
+{% block content %}
+<section class="hero text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Real listings. Real value. No surprises.</h1>
+        <p class="lead mb-4">Browse a hand-picked portfolio of houses, apartments and commercial spaces &mdash; every listing verified, every price upfront.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+            <a href="{% url 'listings:list' %}" class="btn btn-primary btn-lg">Browse Properties</a>
+            <a href="{% url 'pages:contact' %}" class="btn btn-outline-light btn-lg">Contact Us</a>
+        </div>
+        <div class="d-flex justify-content-center gap-4 flex-wrap trust-badges">
+            <span>&#10003; Verified Listings</span>
+            <span>&#10003; Transparent Pricing</span>
+            <span>&#10003; Dedicated Support</span>
+        </div>
+    </div>
+</section>
+
+<section class="stats-bar py-4">
+    <div class="container">
+        <div class="row text-center g-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-number">{{ stats.total_listings }}</div>
+                <div class="stat-label">Active Listings</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number">{{ stats.city_count }}</div>
+                <div class="stat-label">Cities Covered</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number">
+                    {% if stats.min_price %}{{ CURRENCY_SYMBOL }}{{ stats.min_price|intcomma }}{% else %}&mdash;{% endif %}
+                </div>
+                <div class="stat-label">Starting From</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number">
+                    {% if stats.max_price %}{{ CURRENCY_SYMBOL }}{{ stats.max_price|intcomma }}{% else %}&mdash;{% endif %}
+                </div>
+                <div class="stat-label">Up To</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    {% if featured_properties %}
+        <p class="section-kicker">Featured</p>
+        <h2 class="section-heading mb-4">Featured Properties</h2>
+        <div class="row g-4 mb-2">
+            {% for property in featured_properties %}
+                {% include "listings/_property_card.html" %}
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'listings:list' %}" class="btn btn-outline-primary">View All Properties</a>
+        </div>
+    {% else %}
+        <p class="text-muted text-center">No properties listed yet. Check back soon!</p>
+    {% endif %}
+</div>
+
+<section class="bg-soft py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <p class="section-kicker">Property Types</p>
+            <h2 class="section-heading">Browse by Property Type</h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for pt in property_types %}
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{% url 'listings:list' %}?property_type={{ pt.value }}" class="property-type-card">
+                        <div class="fw-semibold">{{ pt.label }}</div>
+                        <div class="text-muted small">{{ pt.count }} listing{{ pt.count|pluralize }}</div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"
+                     class="img-fluid rounded shadow-sm" alt="About {{ COMPANY_NAME }}">
+            </div>
+            <div class="col-lg-6">
+                <p class="section-kicker">About</p>
+                <h2 class="section-heading mb-3">About {{ COMPANY_NAME }}</h2>
+                <p class="text-muted">
+                    {{ COMPANY_NAME }} helps buyers, sellers and renters navigate the property market with confidence.
+                    Every listing on our site is reviewed for accuracy, so what you see is what you get &mdash;
+                    no inflated prices, no bait-and-switch, no guesswork.
+                </p>
+                <p class="text-muted mb-4">
+                    Whether you're looking for a first home, an investment property, or commercial space,
+                    our portfolio is built around one goal: helping you make a decision you're confident in.
+                </p>
+                <a href="{% url 'pages:contact' %}" class="btn btn-primary">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-soft py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <p class="section-kicker">Why Us</p>
+            <h2 class="section-heading">Why {{ COMPANY_NAME }}</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="why-us-item">
+                    <h5>Verified Listings</h5>
+                    <p class="text-muted mb-0">Every property is checked before it goes live &mdash; no outdated or duplicate listings.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="why-us-item">
+                    <h5>Transparent Pricing</h5>
+                    <p class="text-muted mb-0">The price you see is the price you get. No hidden fees, no last-minute surprises.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="why-us-item">
+                    <h5>Wide Portfolio</h5>
+                    <p class="text-muted mb-0">Houses, apartments, villas, plots and commercial spaces &mdash; all in one place.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="why-us-item">
+                    <h5>Dedicated Support</h5>
+                    <p class="text-muted mb-0">Questions about a listing? Reach out and get a real answer, fast.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="why-us-item">
+                    <h5>Easy Enquiries</h5>
+                    <p class="text-muted mb-0">Enquire directly from any listing &mdash; no account or sign-up required.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="why-us-item">
+                    <h5>No Pressure</h5>
+                    <p class="text-muted mb-0">Browse at your own pace. We're here when you're ready, not before.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-cta py-5 text-center">
+    <div class="container">
+        <p class="section-kicker" style="color: var(--gold-light);">Get Started</p>
+        <h2 class="mb-3">Not sure what you're looking for?</h2>
+        <p class="lead mb-4">Tell us your budget and requirements &mdash; we'll help you find the right fit.</p>
+        <a href="{% url 'pages:contact' %}" class="btn btn-primary btn-lg">Contact Us</a>
+    </div>
+</section>
+{% endblock %}

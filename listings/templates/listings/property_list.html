@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Properties &mdash; {{ COMPANY_NAME }}{% endblock %}
+{% block meta_description %}Browse available properties for sale and rent at {{ COMPANY_NAME }}. Filter by type, city and price.{% endblock %}
+
+{% block content %}
+<div class="property-page">
+<div class="container py-5">
+    <h1 class="mb-4">Properties</h1>
+
+    <form method="get" class="row g-3 mb-4 p-3 bg-soft rounded">
+        <div class="col-md-4">
+            <input type="text" name="q" class="form-control" placeholder="Search by keyword (title, description, address)" value="{{ filters.q }}">
+        </div>
+        <div class="col-md-2">
+            <select name="listing_type" class="form-select">
+                <option value="">Any Type</option>
+                {% for value, label in listing_types %}
+                    <option value="{{ value }}" {% if filters.listing_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="property_type" class="form-select">
+                <option value="">Any Property</option>
+                {% for value, label in property_types %}
+                    <option value="{{ value }}" {% if filters.property_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="city" class="form-control" placeholder="City" value="{{ filters.city }}" list="cityList">
+            <datalist id="cityList">
+                {% for c in cities %}
+                    <option value="{{ c }}">
+                {% endfor %}
+            </datalist>
+        </div>
+        <div class="col-md-1">
+            <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="{{ filters.min_price }}">
+        </div>
+        <div class="col-md-1">
+            <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="{{ filters.max_price }}">
+        </div>
+        <div class="col-12 d-grid">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+
+    <div class="row g-4">
+        {% for property in page_obj %}
+            {% include "listings/_property_card.html" %}
+        {% empty %}
+            <p class="text-muted">No properties match your search.</p>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

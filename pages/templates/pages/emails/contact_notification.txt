@@ -1,0 +1,13 @@
+New inquiry from {{ contact.name }}
+
+Name:     {{ contact.name }}
+Phone:    {{ contact.phone }}
+Email:    {{ contact.email|default:"-" }}
+Property: {% if contact.property %}{{ contact.property.title }} ({{ CURRENCY_SYMBOL }}{{ contact.property.price }}){% if property_url %} - {{ property_url }}{% endif %}{% else %}General inquiry{% endif %}
+Received: {{ contact.created_at }}
+
+Message:
+{{ contact.message }}
+
+--
+Sent automatically from the {{ COMPANY_NAME }} contact form.
